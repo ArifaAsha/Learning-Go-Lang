@@ -1,5 +1,7 @@
 package main
 
+// https://www.youtube.com/watch?v=NU4OlJVj1gs
+
 import (
 	"fmt"
 
@@ -29,6 +31,8 @@ func main() {
 	// 	fmt.Println(h.ChildText("h2.product-title")) // h2 tag and class => product title
 	// }) //without space at the last
 
+	var items []item //blank list or black slice
+
 	c.OnHTML("div.col-sm-9 div[itemprop=itemListElement]", func(h *colly.HTMLElement) { //find itemprop and print all the text
 		item := item{
 			Name:   h.ChildText("h2.product-title"),
@@ -36,10 +40,10 @@ func main() {
 			ImgUrl: h.ChildAttr("img", "src"),
 		}
 		// h.ChildText("h2.product-title") // h2 tag and class => product title
-		fmt.Println(item)
+		// fmt.Println(item)
+		items = append(items, item)
 	})
 
 	c.Visit("http://j2store.net/demo/index.php/shop")
-
-	// https://www.youtube.com/watch?v=NU4OlJVj1gs
+	fmt.Println(items)
 }
