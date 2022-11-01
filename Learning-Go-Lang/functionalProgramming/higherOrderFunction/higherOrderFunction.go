@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func callPrintNumber(f func(string), number string) {
+func callPrintNumber(f func(string), number string) { //function as a parameter
 	f(number)
 }
 
@@ -20,8 +20,8 @@ func getClicker() func() int {
 }
 
 func main() {
-	callPrintNumber(printNumber, "12222")
-	click := getClicker()
+	callPrintNumber(printNumber, "12222") //Function as a parameter
+	click := getClicker()                 //returning function
 	fmt.Println(click())
 	fmt.Println(click())
 }
