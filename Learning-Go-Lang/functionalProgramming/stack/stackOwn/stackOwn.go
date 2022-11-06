@@ -13,12 +13,21 @@ func (s stack) IsEmpty() bool {
 	return s.top < 0
 }
 
-// LIFO -> add as the last element of slice -> popped
+// LIFO -> add as the last element of slice -> push
+// Iterative approach
+
+// func (s stack) Push(vals ...int) (stack, []int) {
+// 	for _, val := range vals {
+// 		s.top += 1
+// 		s.actualStack = append(s.actualStack, val)
+// 	}
+// 	return s, s.actualStack
+// }
+
+// LIFO -> add as the last element of slice -> push
 func (s stack) Push(vals ...int) (stack, []int) {
-	for _, val := range vals {
-		s.top += 1
-		s.actualStack = append(s.actualStack, val)
-	}
+	s.top++
+	s.actualStack = append(s.actualStack, vals...)
 	return s, s.actualStack
 }
 

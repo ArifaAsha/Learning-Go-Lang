@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 const MAX = 100
 
@@ -13,19 +15,30 @@ func (s Queue) IsEmpty() bool {
 	return s.front < 0
 }
 
-func (q Queue) enqueue(vals ...int) (Queue, []int) {
-	for _, val := range vals {
-		q.front += 1
-		q.actualQueue = append(q.actualQueue, val)
+// func (q Queue) enqueue(vals ...int) (Queue, []int) {
+// 	for _, val := range vals {
+// 		q.front += 1
+// 		q.actualQueue = append(q.actualQueue, val)
+// 	}
+// 	return q, q.actualQueue
+// }
+
+func noOfElementInVals(i int, vals ...int) {
+	num := -1
+	appendedSlice := append(vals, num)
+	if appendedSlice[i] == -1 {
+		fmt.Println(i)
+	} else {
+		i++
+		noOfElementInVals(i, vals[i:])
 	}
-	return q, q.actualQueue
 }
 
-// func dequeue(queue []int) []int {
-// 	element := queue[0] // The first element is the one to be dequeued.
-// 	fmt.Println("Dequeued:", element)
-// 	return queue[1:] // Slice off the element once it is dequeued.
-// }
+func (q Queue) enqueue(vals ...int) (Queue, []int) {
+	q.front++
+	q.actualQueue = append(q.actualQueue, vals...)
+	return q, q.actualQueue
+}
 
 // FIFO -> first element of slice -> popped
 func (q Queue) Dequeue() (Queue, []int) {
@@ -53,7 +66,9 @@ func main() {
 
 	fmt.Println("After dequeue 8: ", newQueue2.actualQueue)
 	afterDequeue, dequedElement := newQueue2.Dequeue()
-	fmt.Println(afterDequeue, dequedElement)
+	fmt.Println("After dequeue: ", afterDequeue, dequedElement)
 
 	fmt.Println("Front of the queue: ", afterDequeue.Front())
+
+	noOfElementInVals(1, 2, 3)
 }
