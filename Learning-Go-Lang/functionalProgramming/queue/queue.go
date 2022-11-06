@@ -67,3 +67,4 @@ func main() {
 
 	fmt.Println("Front of the queue: ", afterDequeue.Front())
 }
+ 
