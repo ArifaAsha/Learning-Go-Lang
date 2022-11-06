@@ -23,19 +23,16 @@ func (s Queue) IsEmpty() bool {
 // 	return q, q.actualQueue
 // }
 
-func noOfElementInVals(i int, vals ...int) {
-	num := -1
-	appendedSlice := append(vals, num)
-	if appendedSlice[i] == -1 {
-		fmt.Println(i)
-	} else {
-		i++
-		noOfElementInVals(i, vals[i:])
-	}
+func noOfInToBeEnqueued(vals ...int) int {
+	emptySlice := []int{}
+	s := append(emptySlice, vals...)
+	n := len(s)
+	return n
 }
 
 func (q Queue) enqueue(vals ...int) (Queue, []int) {
-	q.front++
+	noOfElements := noOfInToBeEnqueued(vals...)
+	q.front = q.front + noOfElements
 	q.actualQueue = append(q.actualQueue, vals...)
 	return q, q.actualQueue
 }
@@ -69,6 +66,4 @@ func main() {
 	fmt.Println("After dequeue: ", afterDequeue, dequedElement)
 
 	fmt.Println("Front of the queue: ", afterDequeue.Front())
-
-	noOfElementInVals(1, 2, 3)
 }

@@ -24,9 +24,17 @@ func (s stack) IsEmpty() bool {
 // 	return s, s.actualStack
 // }
 
+func noOfInToBePushed(vals ...int) int {
+	emptySlice := []int{}
+	s := append(emptySlice, vals...)
+	n := len(s)
+	return n
+}
+
 // LIFO -> add as the last element of slice -> push
 func (s stack) Push(vals ...int) (stack, []int) {
-	s.top++
+	noOfArgs := noOfInToBePushed(vals...)
+	s.top = s.top + noOfArgs
 	s.actualStack = append(s.actualStack, vals...)
 	return s, s.actualStack
 }
