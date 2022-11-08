@@ -6,7 +6,8 @@ import "fmt"
 
 // Graph structure => adjacency list
 type Graph struct {
-	vertices []Vertex //list of vertices
+	noOfVertices int
+	vertices     []Vertex //list of vertices
 
 }
 
@@ -166,6 +167,72 @@ func (graph Graph) addvertex(n int) Graph {
 // 	}
 // 	return nil
 // }
+// ----------------
+// func (graph Graph) getVertex(k int) Vertex {
+// 	for i, v := range graph.vertices {
+// 		if v.key == k {
+// 			return graph.vertices[i]
+// 		}
+// 	}
+// 	return graph.vertices[0]
+// }
+// ------------------------
+
+func (graph Graph) getVertex(k int) Vertex {
+	for i, v := range graph.vertices {
+		if v.key == k {
+			return graph.vertices[i]
+		}
+	}
+	return graph.vertices[0]
+}
+
+func (graph Graph) addEdge(fromVertex int, toVertex int) Graph {
+	fromVertexV := graph.getVertex(fromVertex)
+	graph.vertices[fromVertex].adjacent = append(fromVertexV.adjacent[fromVertex], toVertex)
+	graph.printGraph()
+	return graph
+}
+
+// func (this *Graph) connect(start, last int) {
+// 	var edge *AjlistNode = getAjlistNode(last)
+// 	if this.node[start].next == nil {
+// 		this.node[start].next = edge
+// 	} else {
+// 		// Add edge at the end
+// 		this.node[start].last.next = edge
+// 	}
+// 	// Get last edge
+// 	this.node[start].last = edge
+// }
+
+//  Handling the request of adding new edge
+// func(this *Graph) addEdge(start, last int) {
+//     if start >= 0 && start < this.size &&
+//         last >= 0 && last < this.size {
+//         // Safe connection
+//         this.connect(start, last)
+//     } else {
+//         // When invalid nodes
+//         fmt.Println("\nHere Something Wrong")
+//     }
+// }
+
+// func (graph Graph) addEdge(from, to int) Graph {
+// 	// get vertex
+// 	fromVertex := graph.getVertex(from)
+// 	toVertex := graph.getVertex(to)
+
+// 	// fmt.Println(fromVertex, toVertex)
+// 	//check error
+// 	// add edge
+// 	fromVertex.adjacent = append(fromVertex.adjacent, toVertex)
+
+// 	// fmt.Println(graph.vertices[])
+
+// 	// fmt.Println(fromVertex.adjacent)
+// 	return graph
+// }
 
 func main() {
 	test := Graph{}
@@ -175,6 +242,9 @@ func main() {
 	}
 	// test = test.addvertex(9)
 	test.printGraph()
+	test.addEdge(1, 2)
+	fmt.Println("----------------")
+	// g.printGraph()
 	// ifExist(test.vertices, 1, 0)
 	// printV(test.vertices, 5, 0)
 	// fmt.Println("-------", len(test.vertices))
