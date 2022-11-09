@@ -6,6 +6,9 @@ func printList(slice []int) {
 	} else {
 		print(slice[0])
 		printList(slice[1:])
+
+		// fmt.Println(slice[1:])
+		// fmt.Println("==============")
 	}
 }
 
