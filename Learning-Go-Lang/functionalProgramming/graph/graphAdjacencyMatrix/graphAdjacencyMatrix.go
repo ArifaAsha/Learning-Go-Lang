@@ -2,85 +2,38 @@ package main
 
 import "fmt"
 
-func addVertex(graph [][]int, v int) [][]int {
-
-	// if(graph[i]!= v){
-
-	// }else{
-	// if(){
-	graph2 := [][]int{}
-
-	emptySlice := []int{}
-	graph[0] = append(emptySlice, v)
-	graph2 = append(graph2)
-	return graph
-
+type Graph struct {
+	vertices []Vertex
 }
 
-// func findVertex(graph [][]int, from int) ([][]int, []int) {
-// 	for _, col := range graph {
-// 		for _, value := range col {
-// 			if value == from {
-// 				return graph, col
-// 			}
-// 		}
-// 	}
-// 	addVertex(graph, from)
-// 	return graph, nil
-// }
+type Vertex struct {
+	key      int
+	adjacent []Vertex
+}
 
-func findVertex(graph [][]int, from int, to int) ([][]int, []int) {
-	for _, col := range graph {
-		for _, value := range col {
-			fmt.Println(value)
-			// if value == from {
-			// 	fmt.Println("hehe")
-			// 	// col = append(col, to)
-			// 	// fmt.Println(col)
-			// }
+func (graph Graph) printGraph() {
+	for _, v := range graph.vertices {
+		fmt.Printf("\nVertex %v: ", v.key)
+		for _, v := range v.adjacent { //vertices inside the adjacency list
+			fmt.Printf("%v ", v.key)
 		}
-
 	}
-	addVertex(graph, from)
-	return graph, nil
+	fmt.Println()
 }
 
-// func addNewEdgeInGraph(graph [][]int, vertex []int, vertex2 []int) {
-// 	for _, col := range graph {
-// 		for _, value := range col {
-// 			if value == from {
-// 				append()
-// 			}
-// 		}
-// 	}
-// }
+func (graph Graph) addvertex(n int) Graph {
+	graph.vertices = append(graph.vertices, Vertex{key: n}) //append the new vertex to the vertices list in the graph
+	return graph
+}
 
-// func addEdge(graph [][]int, from int, to int) [][]int {
-// 	graph, vertex := findVertex(graph, from)
-// 	vertex2 := append(vertex, to)
-// 	addNewEdgeInGraph(graph, vertex, vertex2)
-// 	return graph
-// }
-
-// main function
 func main() {
+	test := Graph{}
 
-	// declaring a slice of slices of
-	// type integer with a length of 3
-	var graph = make([][]int, 4)
-	graph = addVertex(graph, 0)
-	graph = addVertex(graph, 1)
-	graph = addVertex(graph, 2)
-	graph = addVertex(graph, 3)
+	for i := 0; i < 5; i++ {
+		test = test.addvertex(i)
+	}
 
-	fmt.Println(graph)
-
-	// x := checkIfExist2D(graph, 0)
-	// fmt.Println(graph)
-	graph, x := findVertex(graph, 2, 3)
-	// fmt.Println(graph)
-	// fmt.Println(x)
-	// graph = addEdge(graph, 2, 3)
-	// fmt.Println(graph)
+	fmt.Println(test)
+	fmt.Println("----------------")
 
 }
