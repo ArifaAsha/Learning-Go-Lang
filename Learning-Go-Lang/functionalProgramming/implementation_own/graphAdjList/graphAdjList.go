@@ -2,9 +2,6 @@ package main
 
 import "fmt"
 
-// https://www.youtube.com/watch?v=bSZ57h7GN2w
-
-// Graph structure => adjacency list
 type Graph struct {
 	vertices []Vertex //list of vertices
 }
@@ -14,17 +11,6 @@ type Vertex struct {
 	key      int
 	adjacent []Vertex
 }
-
-// print adjacent list of each vertex
-// func (graph Graph) printGraph() {
-// 	for _, v := range graph.vertices {
-// 		fmt.Printf("\nVertex %v: ", v.key)
-// 		for _, v := range v.adjacent { //vertices inside the adjacency list
-// 			fmt.Printf("%v ", v.key)
-// 		}
-// 	}
-// 	fmt.Println()
-// }
 
 // print graph
 func (graph Graph) returnKey(i int) {
@@ -44,17 +30,6 @@ func (graph Graph) returnKey(i int) {
 	}
 }
 
-// func iterateOverAdjacent(vertex Vertex, i int) {
-// 	if i == len(vertex.adjacent) {
-// 		return
-// 	} else {
-// 		printKeyOfTheVertex(vertex.adjacent[i])
-// 		i++
-// 		iterateOverAdjacent(vertex.adjacent[i], i)
-// 	}
-// }
-
-// ===========
 func iterateOverAdjacent(vertex Vertex, i int) {
 	if i == len(vertex.adjacent) {
 		return
@@ -77,7 +52,6 @@ func getListOfVertex(vertexList []Vertex, vertex Vertex, i int) {
 		vertex = vertexList[i]
 		printKeyOfTheVertex(vertex)
 		fmt.Print(" ")
-		// fmt.Println("i = ", i)
 		if i+1 != len(vertexList) {
 			i++
 			getListOfVertex(vertexList, vertexList[i], i)
@@ -85,43 +59,6 @@ func getListOfVertex(vertexList []Vertex, vertex Vertex, i int) {
 
 	}
 }
-
-// func iterateOverAdjacent(vertex Vertex, i int) {
-// 	if i == len(vertex.adjacent) {
-// 		return
-// 	} else {
-// 		if len(vertex.adjacent) == 0 {
-// 			printKeyOfTheVertex(vertex)
-// 		} else {
-// 			//iterate over the list
-
-// 		}
-// 	}
-// }
-
-// func iterateOverAdjacent(vertex Vertex, i int) {
-// 	if i == len(vertex.adjacent) {
-// 		return
-// 	} else {
-// 		if len(vertex.adjacent) == 0 {
-// 			printKeyOfTheVertex(vertex)
-// 		} else {
-// 			vertex = vertex.adjacent[i]
-// 			printKeyOfTheVertex(vertex.adjacent[i])
-// 			i++
-// 			iterateOverAdjacent(vertex, i)
-// 			// vertex = vertex.adjacent[i]
-// 			// printKeyOfTheVertex(vertex)
-// 			// i++
-// 			// iterateOverAdjacent(vertex, i)
-
-// 			// iterateOverAdjacent(vertex, i)
-// 		}
-// 		// printKeyOfTheVertex(vertex.adjacent[i].key)
-// 		// i++
-// 		// iterateOverAdjacent(vertex.adjacent[i], i)
-// 	}
-// }
 
 func printKeyOfTheVertex(vertex Vertex) {
 	fmt.Print(vertex.key)
