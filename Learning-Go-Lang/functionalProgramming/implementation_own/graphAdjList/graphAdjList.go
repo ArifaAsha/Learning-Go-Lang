@@ -116,3 +116,15 @@ func main() {
 	fmt.Println("----------------")
 
 }
+
+/*
+Output:
+
+Vertex 0:
+Vertex 1: 2 3
+Vertex 2: 3 4
+Vertex 3:
+Vertex 4:
+
+----------------
+*/

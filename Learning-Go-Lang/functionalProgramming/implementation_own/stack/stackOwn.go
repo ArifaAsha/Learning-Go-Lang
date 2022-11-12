@@ -13,17 +13,6 @@ func (s stack) IsEmpty() bool {
 	return s.top < 0
 }
 
-// LIFO -> add as the last element of slice -> push
-// Iterative approach
-
-// func (s stack) Push(vals ...int) (stack, []int) {
-// 	for _, val := range vals {
-// 		s.top += 1
-// 		s.actualStack = append(s.actualStack, val)
-// 	}
-// 	return s, s.actualStack
-// }
-
 func noOfInToBePushed(vals ...int) int {
 	emptySlice := []int{}
 	s := append(emptySlice, vals...)
@@ -74,3 +63,14 @@ func main() {
 	topVal := stk.Top()
 	fmt.Println("Top value: ", topVal)
 }
+
+/*
+Output:
+
+[1 3 4 6]
+New stack object after push:  {4 [1 3 4 6 9]}
+Stack after pushing 9:  [1 3 4 6 9]
+{3 [1 3 4 6]}
+After pop:  [1 3 4 6]
+Top value:  6
+*/

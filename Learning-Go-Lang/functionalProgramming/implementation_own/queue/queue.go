@@ -15,14 +15,6 @@ func (s Queue) IsEmpty() bool {
 	return s.front < 0
 }
 
-// func (q Queue) enqueue(vals ...int) (Queue, []int) {
-// 	for _, val := range vals {
-// 		q.front += 1
-// 		q.actualQueue = append(q.actualQueue, val)
-// 	}
-// 	return q, q.actualQueue
-// }
-
 func noOfInToBeEnqueued(vals ...int) int {
 	emptySlice := []int{}
 	s := append(emptySlice, vals...)
@@ -67,4 +59,14 @@ func main() {
 
 	fmt.Println("Front of the queue: ", afterDequeue.Front())
 }
- 
+
+/*
+Output:
+
+[8 10]
+{2 [8 10 90]} [8 10 90]
+After dequeue 8:  [8 10 90]
+Dequeued: 8
+After dequeue:  {1 [8 10 90]} [10 90]
+Front of the queue:  10
+*/

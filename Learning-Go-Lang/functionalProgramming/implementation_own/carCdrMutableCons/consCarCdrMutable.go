@@ -37,7 +37,15 @@ func main() {
 	list2 := cons(list, 10)
 
 	fmt.Println(list2)
-	fmt.Println(car(list2))
-	fmt.Println(cdr(list2))
+	fmt.Println("Car : ", car(list2))
+	fmt.Println("Cdr : ", cdr(list2))
 
 }
+
+/*
+Output:
+
+[1 2 3 4 10]
+Car :  1
+Cdr :  [2 3 4 10]
+*/

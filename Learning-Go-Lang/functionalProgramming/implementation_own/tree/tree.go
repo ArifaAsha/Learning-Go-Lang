@@ -94,3 +94,17 @@ func main() {
 	fmt.Println()
 
 }
+
+/*
+Output:
+
+---------------------
+Tree : [1 0 0 2 3 4 5 6 7 0]
+---------------------
+Left child of 1 is = 2
+Right child of 1 is = 3
+Left child of 2 is = 4
+Right child of 2 is = 5
+Left child of 3 is = 6
+Right child of 3 is = 7
+*/
