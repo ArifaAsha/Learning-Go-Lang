@@ -1,61 +1,32 @@
 package main
 
-import (
-	"context"
-	"fmt"
-	"log"
-	"time"
+// package main
 
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
+// import (
+// 	"fmt"
+
+// 	"github.com/arduino/go-shopify/shopify"
+// )
+
+// func main() {
+// 	shop := shopify.NewClient("dummy-3378", "523f4d4460cd849e2dc16bbb9bf2a24b", "https://dummy-3378.myshopify.com/admin/api/2022-10/products.json")
+// 	shop.LoadProducts()
+// 	// fmt.Println(shop)
+// 	fmt.Printf("%v\n", shop.Products)
+// }
+
+import (
+	shopify "github.com/boourns/go_shopify"
 )
 
-type Podcast struct {
-	ID     primitive.ObjectID `bson:"_id,omitempty"`
-	Title  string             `bson:"title,omitempty"`
-	Author string             `bson:"author,omitempty"`
-	Tags   []string           `bson:"tags,omitempty"`
-}
-
 func main() {
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://asha:lDFQuDlbGR8RMFwr@cluster0.ebrqthb.mongodb.net/shopify?retryWrites=true&w=majority"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	err = client.Connect(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer client.Disconnect(ctx)
-
-	err = client.Ping(ctx, readpref.Primary())
-	if err != nil {
-		log.Fatal(err)
+	api = shopify.API{
+		URI:    "https://dummy-3378.myshopify.com/admin/",
+		Token:  "3649e565061a54216c506a876cbbc6db",
+		Secret: "523f4d4460cd849e2dc16bbb9bf2a24b",
 	}
 
-	databases, err := client.ListDatabaseNames(ctx, bson.M{})
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(databases)
-
-	podcast := Podcast{
-		Title:  "The Polyglot Developer",
-		Author: "Nic Raboy",
-		Tags:   []string{"development", "programming", "coding"},
-	}
-
-	database := client.Database("shopify")
-	podcastsCollection := database.Collection("shopifyData")
-
-	insertResult, err := podcastsCollection.InsertOne(ctx, podcast)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(insertResult.InsertedID)
-
+	products := api.Products()
+	// or
+	product := api.Product(12345)
 }
