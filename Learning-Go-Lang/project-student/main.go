@@ -22,7 +22,8 @@ func main() {
 	router := mux.NewRouter()
 
 	students = append(students, Student{ID: 1, Name: "A. Rahim", Department: "CSE", DOB: "09-09-1998"},
-		Student{ID: 2, Name: "A. Karim", Department: "EEE", DOB: "01-09-1997"})
+		Student{ID: 2, Name: "A. Karim", Department: "EEE", DOB: "01-09-1997"},
+		Student{ID: 3, Name: "Kashem", Department: "CSE", DOB: "01-09-1990"})
 
 	router.HandleFunc("/students", getStudents).Methods("GET") //Method-> GET action
 	router.HandleFunc("/students/{id}", getStudent).Methods("GET")
@@ -59,7 +60,16 @@ func addStudent(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateStudent(w http.ResponseWriter, r *http.Request) {
-	log.Println("Updates a student")
+	// log.Println("Updates a student")
+	var student Student
+	json.NewDecoder(r.Body).Decode(&student) // after decoding request body -> map attributes to fields inside student
+
+	for i, s := range students {
+		if s.ID == student.ID {
+			students[i] = student
+		}
+	}
+	json.NewEncoder(w).Encode(students)
 }
 
 func removeStudent(w http.ResponseWriter, r *http.Request) {
