@@ -25,7 +25,7 @@ func main() {
 		Student{ID: 2, Name: "A. Karim", Department: "EEE", DOB: "01-09-1997"})
 
 	router.HandleFunc("/students", getStudents).Methods("GET") //Method-> GET action
-	router.HandleFunc("/student/{id}", getStudent).Methods("GET")
+	router.HandleFunc("/students/{id}", getStudent).Methods("GET")
 	router.HandleFunc("/students", addStudent).Methods("POST")
 	router.HandleFunc("/students", updateStudent).Methods("PUT")
 	router.HandleFunc("/students/{id}", removeStudent).Methods("DELETE ")
@@ -34,17 +34,11 @@ func main() {
 }
 
 func getStudents(w http.ResponseWriter, r *http.Request) {
-	// log.Println("Gets all books")
 	json.NewEncoder(w).Encode(students)
 }
 
 func getStudent(w http.ResponseWriter, r *http.Request) {
-	// log.Println("Gets a book")
 	params := mux.Vars(r) //returns a map
-
-	log.Println(params)
-
-	// log.Println(reflect.TypeOf(params["id"]))
 
 	i, _ := strconv.Atoi(params["id"])
 
@@ -56,7 +50,12 @@ func getStudent(w http.ResponseWriter, r *http.Request) {
 }
 
 func addStudent(w http.ResponseWriter, r *http.Request) {
-	log.Println("Add a student")
+	// log.Println("Add a student")
+	var student Student
+	json.NewDecoder(r.Body).Decode(&student)
+	students = append(students, student)
+
+	json.NewEncoder(w).Encode(students)
 }
 
 func updateStudent(w http.ResponseWriter, r *http.Request) {
