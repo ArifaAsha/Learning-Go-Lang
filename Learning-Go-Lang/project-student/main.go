@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -29,7 +30,7 @@ func main() {
 	router.HandleFunc("/students/{id}", getStudent).Methods("GET")
 	router.HandleFunc("/students", addStudent).Methods("POST")
 	router.HandleFunc("/students", updateStudent).Methods("PUT")
-	router.HandleFunc("/students/{id}", removeStudent).Methods("DELETE ")
+	router.HandleFunc("/students/{id}", removeStudent).Methods("DELETE")
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
@@ -73,5 +74,17 @@ func updateStudent(w http.ResponseWriter, r *http.Request) {
 }
 
 func removeStudent(w http.ResponseWriter, r *http.Request) {
-	log.Println("Removes a student")
+	fmt.Println("hehe")
+	params := mux.Vars(r) //parameter => request object; params -> map containg id and the value
+
+	id, _ := strconv.Atoi(params["id"]) //id inside the request
+
+	for i, s := range students {
+		if s.ID == id {
+			students = append(students[:i], students[i+1:]...) //
+		}
+	}
+	fmt.Println(students)
+
+	json.NewEncoder(w).Encode(students)
 }
