@@ -122,5 +122,10 @@ func updateStudent(w http.ResponseWriter, r *http.Request) {
 }
 
 func removeStudent(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)                                                     //returns key value pairs-> id passed in the url
+	result, err := db.Exec("delete from student where id = $1", params["id"]) //$1 -> placeholder and the value of placeholder is params["id"]
+	logFatal(err)
 
+	roewsDeleted, err := result.RowsAffected()
+	json.NewEncoder(w).Encode(roewsDeleted)
 }
