@@ -88,7 +88,14 @@ func getStudents(w http.ResponseWriter, r *http.Request) {
 }
 
 func getStudent(w http.ResponseWriter, r *http.Request) {
+	var student Student
+	params := mux.Vars(r)
 
+	rows := db.QueryRow("select * from student where id=$1", params["id"]) //$1 => placeholder id inside params
+	err := rows.Scan(&student.ID, &student.Name, &student.Department, &student.DOB)
+	logFatal(err)
+
+	json.NewEncoder(w).Encode(student)
 }
 
 func addStudent(w http.ResponseWriter, r *http.Request) {
