@@ -111,7 +111,14 @@ func addStudent(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateStudent(w http.ResponseWriter, r *http.Request) {
+	var student Student
+	json.NewDecoder(r.Body).Decode(&student) //decode request body and mapping
 
+	result, err := db.Exec("update student set name=$1, department=$2, dob=$3 where id=$4 RETURNING id", &student.Name, &student.Department, &student.DOB, &student.ID)
+	rowsUpdated, err := result.RowsAffected()
+	logFatal(err)
+
+	json.NewEncoder(w).Encode(rowsUpdated)
 }
 
 func removeStudent(w http.ResponseWriter, r *http.Request) {
