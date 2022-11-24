@@ -1,11 +1,15 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
-	"strconv"
+	"os"
+
+	//connect to DB istance for elephant sql
+	"github.com/lib/pq"
+	"github.com/subosito/gotenv"
 
 	"github.com/gorilla/mux"
 )
@@ -18,13 +22,42 @@ type Student struct {
 }
 
 var students []Student
+var db *sql.DB
+
+func init() {
+	gotenv.Load() //loads all the env variable inside the .env file
+}
+
+func logFatal(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
 
 func main() {
-	router := mux.NewRouter()
+	pgURL, err := pq.ParseURL(os.Getenv("ELEPHANTSQL_URL"))
+	logFatal(err)
 
-	students = append(students, Student{ID: 1, Name: "A. Rahim", Department: "CSE", DOB: "09-09-1998"},
-		Student{ID: 2, Name: "A. Karim", Department: "EEE", DOB: "01-09-1997"},
-		Student{ID: 3, Name: "Kashem", Department: "CSE", DOB: "01-09-1990"})
+	db, err = sql.Open("postgres", pgURL)
+
+	logFatal(err)
+
+	err = db.Ping()
+	logFatal(err) //if ping() gives error
+
+	// log.Println(pgURL)
+
+	/*
+		pgURL gives:
+		-`dbname`
+		-`host`
+		-`password`
+		-`port`
+		-`user`
+		pass into sql.open()
+	*/
+
+	router := mux.NewRouter()
 
 	router.HandleFunc("/students", getStudents).Methods("GET") //Method-> GET action
 	router.HandleFunc("/students/{id}", getStudent).Methods("GET")
@@ -32,59 +65,40 @@ func main() {
 	router.HandleFunc("/students", updateStudent).Methods("PUT")
 	router.HandleFunc("/students/{id}", removeStudent).Methods("DELETE")
 
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe(":8000", router))
 }
 
 func getStudents(w http.ResponseWriter, r *http.Request) {
+	var student Student
+	students = []Student{}
+	rows, err := db.Query("select * from student order by id")
+	logFatal(err)
+
+	defer rows.Close()
+
+	for rows.Next() { //map
+		err := rows.Scan(&student.ID, &student.Name, &student.Department, &student.DOB)
+		logFatal(err) //if error
+
+		students = append(students, student)
+	}
+
 	json.NewEncoder(w).Encode(students)
+
 }
 
 func getStudent(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r) //returns a map
 
-	i, _ := strconv.Atoi(params["id"])
-
-	for _, student := range students {
-		if student.ID == i {
-			json.NewEncoder(w).Encode(&student)
-		}
-	}
 }
 
 func addStudent(w http.ResponseWriter, r *http.Request) {
-	// log.Println("Add a student")
-	var student Student
-	json.NewDecoder(r.Body).Decode(&student)
-	students = append(students, student)
 
-	json.NewEncoder(w).Encode(students)
 }
 
 func updateStudent(w http.ResponseWriter, r *http.Request) {
-	// log.Println("Updates a student")
-	var student Student
-	json.NewDecoder(r.Body).Decode(&student) // after decoding request body -> map attributes to fields inside student
 
-	for i, s := range students {
-		if s.ID == student.ID {
-			students[i] = student
-		}
-	}
-	json.NewEncoder(w).Encode(students)
 }
 
 func removeStudent(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("hehe")
-	params := mux.Vars(r) //parameter => request object; params -> map containg id and the value
 
-	id, _ := strconv.Atoi(params["id"]) //id inside the request
-
-	for i, s := range students {
-		if s.ID == id {
-			students = append(students[:i], students[i+1:]...) //
-		}
-	}
-	fmt.Println(students)
-
-	json.NewEncoder(w).Encode(students)
 }
