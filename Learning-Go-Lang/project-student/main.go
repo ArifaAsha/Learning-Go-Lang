@@ -99,7 +99,15 @@ func getStudent(w http.ResponseWriter, r *http.Request) {
 }
 
 func addStudent(w http.ResponseWriter, r *http.Request) {
+	var student Student
+	var studentID int
 
+	//Decode -> values inside the request body are mapped to the fields of student object
+	json.NewDecoder(r.Body).Decode(&student)
+	err := db.QueryRow("insert into student (name, department, dob) values($1, $2, $3) RETURNING id;",
+		student.Name, student.Department, student.DOB).Scan(&studentID) //$-> placeholders
+	logFatal(err)
+	json.NewEncoder(w).Encode(studentID)
 }
 
 func updateStudent(w http.ResponseWriter, r *http.Request) {
